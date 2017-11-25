@@ -57,7 +57,43 @@ int main() {
     post_button.rise(&send_post);
     get_put_button.rise(&send_get_put);
     while (true) {
+        //POST REQUESTS
+         if (post_clicked) {
+            post_clicked = false;
+            NetworkInterface* net = &wifi;
+            HttpRequest* request = new HttpRequest(net, HTTP_POST, "http://192.168.56.1:8080");
+            request->set_header("Content-Type", "application/json");
+            const char body[] = "{\"post\":\"request\"}";
+            HttpResponse* response = request->send(body, strlen(body));
+            lcd_print(response->get_body_as_string().c_str());
+            delete request;
+        }
         
+        //POST AND GET REQUESTS
+        if (get_clicked) {
+            get_clicked = false;
+            put_clicked = true;
+            NetworkInterface* net = &wifi;
+            HttpRequest* request = new HttpRequest(net, HTTP_GET, "http://192.168.56.1:8080");
+            request->set_header("Content-Type", "application/json");
+            const char body[] = "{\"get\":\"request\"}";
+            HttpResponse* response = request->send(body, strlen(body));
+            lcd_print(response->get_body_as_string().c_str());
+            delete request;
+        }
+
+        wait_ms(2000);
+
+        if (put_clicked) {
+            put_clicked = false;
+            NetworkInterface* net = &wifi;
+            HttpRequest* request = new HttpRequest(net, HTTP_PUT, "http://192.168.56.1:8080");
+            request->set_header("Content-Type", "application/json");
+            const char body[] = "{\"put\":\"request\"}";
+            HttpResponse* response = request->send(body, strlen(body));
+            lcd_print(response->get_body_as_string().c_str());
+            delete request;
+        }
     }
 }
     
