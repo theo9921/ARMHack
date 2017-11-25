@@ -19,9 +19,17 @@
 #include "MMA7660.h"
 
 // GLOBAL VARIABLES HERE
+C12832  lcd(PE_14, PE_12, PD_12, PD_11, PE_9);
 TSL2561 light_sensor(PF_0, PF_1, TSL2561_ADDR_HIGH);
 
 // FUNCTION DEFINTIONS HERE
+//LCD Screen
+void lcd_print(const char* message) {
+    lcd.cls();
+    lcd.locate(0, 3);
+    lcd.printf(message);
+}
+
 //READING THE LIGHT SENSOR
 void light_setup(){
     light_sensor.begin();
