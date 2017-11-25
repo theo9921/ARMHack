@@ -101,6 +101,7 @@ int main() {
         if (put_clicked) {
             put_clicked = false;
             NetworkInterface* net = &wifi;
+            //IMPORTANT! USE IP ADDRESS FROM IPCONFIG NOT THE PRINTED IP ADDRESS FROM SERVER!!!
             HttpRequest* request = new HttpRequest(net, HTTP_PUT, "http://10.25.1.101:8080");
             request->set_header("Content-Type", "application/json");
             const char body[] = "{\"put\":\"request\"}";
