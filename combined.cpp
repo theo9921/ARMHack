@@ -6,9 +6,19 @@
 #include "MMA7660.h"
 
 // GLOBAL VARIABLES HERE
+// var for printing messages
 C12832  lcd(PE_14, PE_12, PD_12, PD_11, PE_9);
+
 DigitalOut  led(PB_8, 1);
+// required var for button press
 InterruptIn button(PF_2);
+// variable for temperature senser
+Sht31 temp_sensor(PF_0, PF_1);
+// variable for air sensor
+CCS811 air_sensor(PF_0, PF_1);
+// variable for switching functionality 
+int current_func = 0;
+void (*function_pt)();
 
 // FUNCTION DEFINTIONS HERE
 void lcd_print(const char* message) {
@@ -17,20 +27,52 @@ void lcd_print(const char* message) {
     lcd.printf(message);
 }
 
+void read_temp() {
+    float t = temp_sensor.readTemperature();
+    float h = temp_sensor.readHumidity();
+    char val[32];
+    sprintf(val, "TEMP: %3.2fc, HUM: %3.2f%%", t, h);
+    lcd_print(val);
+}
+
+void read_air() {
+    air_sensor.init();
+    uint16_t eco2, tvoc;
+    air_sensor.readData(&eco2, &tvoc);
+    char val[32];
+    sprintf(val, "eCO2: %dppm, TVOC: %dppb", eco2, tvoc);
+    lcd_print(val);
+}
+
 void toggle_led() {
     led = !led;
-	lcd_print("button pressed");
-	wait_ms(2000);
-	lcd_print("Waiting for button input");
+	lcd_print("switching functionality");
+	wait_ms(500);
+}
+
+void switch_func() {
+	current_func ++;
+	
+	switch(current_func) {
+		case 0:
+			function_pt = &read_temp;
+			break;
+		case 1:
+			function_pt = &read_air;
+			break;
+		default:
+			break;
+	}
 }
 
 int main() {
 
     // MAIN CODE HERE
-    button.rise(&toggle_led);
-    lcd_print("Waiting for button input");
-    /*while(1)
+    button.rise(&switch_func);
+    
+	while(1)
     {
+		function_pt();
         wait_ms(2000);
-    }*/
+    }
 }
