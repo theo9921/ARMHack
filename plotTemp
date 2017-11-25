@@ -1,0 +1,32 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Nov 25 20:52:29 2017
+
+@author: tto21
+"""
+#import main libraries
+import numpy as np
+import matplotlib.pyplot as plt
+
+#set a time interval to get values
+time = np.linspace(10,100,10)
+
+#declare an empty lists for temperature and humidity
+tempL = []
+#do a run of the main code 100 times
+for n in range(10):
+    #get temp value from the server
+    temp = np.random.randint(20,25)
+    
+    #append to list
+    tempL.append(temp)
+    
+#produce graph for temperature against time
+plt.plot(time,tempL,'-o')
+plt.xlabel("Time")
+plt.ylabel("Temperature")
+plt.ylim(0,40)
+plt.show()
+    
+
