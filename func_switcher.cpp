@@ -44,11 +44,11 @@ void read_air() {
     lcd_print(val);
 }
 
-void toggle_led() {
+/*void toggle_led() {
     led = !led;
     lcd_print("switching functionality");
     wait_ms(500);
-}
+}*/
 
 void switch_func() {
     if (current_func == 1) {
