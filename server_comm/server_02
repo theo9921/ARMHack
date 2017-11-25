@@ -1,0 +1,19 @@
+from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
+import SocketServer
+import socket
+
+class MyHandler(BaseHTTPRequestHandler):
+    def do_PUT(self):
+        content_length = len(self.headers) # <--- Gets the size of data
+        post_data = self.rfile.read(content_length) # <--- Gets the data itself
+        return
+        
+##----------------------------------------------
+def run():
+    httpd = HTTPServer(('', 8080), MyHandler)
+    print "HTTP server running on port 8080"
+    print "Your IP address is: ", socket.gethostbyname(socket.gethostname())
+    httpd.serve_forever()
+ 
+if __name__ == '__main__':
+    run()
