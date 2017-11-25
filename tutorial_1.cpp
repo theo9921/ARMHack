@@ -41,7 +41,7 @@ int main() {
 
     // MAIN CODE HERE
     while(1)
-    {
+    {hsajdfjksadfhjksal
         read_temp();
         wait_ms(2000);
     }
