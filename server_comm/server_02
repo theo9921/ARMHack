@@ -15,7 +15,7 @@ class MyHandler(BaseHTTPRequestHandler):
         
 ##----------------------------------------------
 def run():
-    httpd = HTTPServer(('', 8080), MyHandler)
+    httpd = HTTPServer(('10.25.1.101', 8080), MyHandler)
     print "HTTP server running on port 8080"
     print "Your IP address is: ", socket.gethostbyname(socket.gethostname())
     httpd.serve_forever()
