@@ -37,12 +37,29 @@ void read_temp() {
     lcd_print(val);
 }
 
+// Air quality
+void read_air() {
+    air_sensor.init();
+    uint16_t eco2, tvoc;
+    air_sensor.readData(&eco2, &tvoc);
+    char val[32];
+    sprintf(val, "eCO2: %dppm, TVOC: %dppb", eco2, tvoc);
+    lcd_print(val);
+}
+
 int main() {
 
     // MAIN CODE HERE
     while(1)
     {
         read_temp();
+        wait_ms(2000);
+    }
+    
+    // MAIN CODE HERE
+    while(1) {
+        // WHILE LOOP CODE HERE
+        read_air();
         wait_ms(2000);
     }
 }
