@@ -21,6 +21,7 @@
 // GLOBAL VARIABLES HERE
 Sht31 temp_sensor(PF_0, PF_1);
 C12832  lcd(PE_14, PE_12, PD_12, PD_11, PE_9);
+CCS811 air_sensor(PF_0, PF_1);
 
 // FUNCTION DEFINTIONS HERE
 void lcd_print(const char* message) {
