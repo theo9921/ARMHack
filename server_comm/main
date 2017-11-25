@@ -21,10 +21,7 @@ C12832  lcd(PE_14, PE_12, PD_12, PD_11, PE_9);
 OdinWiFiInterface wifi;
 
 //Adding button inturrupts
-InterruptIn post_button(PF_2);
-InterruptIn get_put_button(PG_4);
-volatile bool post_clicked = false;
-volatile bool get_clicked = false;
+InterruptIn put_button(PF_2);
 volatile bool put_clicked = false;
 
 // FUNCTION DEFINITIONS HERE
@@ -35,11 +32,8 @@ void lcd_print(const char* message) {
 }
 
 //Adding button inturrupts
-void send_post() {
-    post_clicked = true;
-}
-void send_get_put() {
-    get_clicked = true;
+void send_put() {
+    put_clicked = true;
 }
 
 int main() {
@@ -54,55 +48,21 @@ int main() {
     lcd_print("Successfully connected!");
     
     //Adding button interrups
-    post_button.rise(&send_post);
+    put_button.rise(&send_put);
     get_put_button.rise(&send_get_put);
     while (true) {
-        //POST REQUESTS
-         if (post_clicked) {
-//            lcd_print("Button pressed!");
-            post_clicked = false;
+        //PUT REQUESTS
+         if (put_clicked) {
+            lcd_print("Button pressed!");
+            put_clicked = false;
             NetworkInterface* net = &wifi;
-            HttpRequest* request = new HttpRequest(net, HTTP_POST, "http://10.25.1.101:8080");
+            HttpRequest* request = new HttpRequest(net, HTTP_PUT, "http://10.25.1.101:8080");
             
             //Debugging purposes, displays request on lcd screen
             //char s[64];
 //            sprintf(s, "%x", request);
 //            lcd_print(s);
 
-            request->set_header("Content-Type", "application/json");
-            const char body[] = "{\"post\":\"request\"}";
-            HttpResponse* response = request->send(body, strlen(body));
-            lcd_print(response->get_body_as_string().c_str());
-            delete request;
-        }
-        
-        //POST AND GET REQUESTS
-        if (get_clicked) {
-                       
-            get_clicked = false;
-            put_clicked = true;
-            NetworkInterface* net = &wifi;
-            
-            //Debugging, prints Mbed's IP address
-//            const char * test;
-//            test = net->get_ip_address();
-//            lcd_print(test);
-            
-            HttpRequest* request = new HttpRequest(net, HTTP_GET, "http://10.25.1.101:8080");
-            request->set_header("Content-Type", "application/json");
-            const char body[] = "{\"get\":\"request\"}";
-            HttpResponse* response = request->send(body, strlen(body));
-            lcd_print(response->get_body_as_string().c_str());
-            delete request;
-        }
-
-        wait_ms(2000);
-
-        if (put_clicked) {
-            put_clicked = false;
-            NetworkInterface* net = &wifi;
-            //IMPORTANT! USE IP ADDRESS FROM IPCONFIG NOT THE PRINTED IP ADDRESS FROM SERVER!!!
-            HttpRequest* request = new HttpRequest(net, HTTP_PUT, "http://10.25.1.101:8080");
             request->set_header("Content-Type", "application/json");
             const char body[] = "{\"put\":\"request\"}";
             HttpResponse* response = request->send(body, strlen(body));
