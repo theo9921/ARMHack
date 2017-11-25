@@ -4,6 +4,11 @@ import SocketServer
 import socket
  
 class MyHandler(BaseHTTPRequestHandler):
+#class MyTCPHandler(SocketServer.BaseRequestHandler):
+    
+    # def handle(self):
+    #     print "testing"
+    #     print self.request.recv(1024).strip();
     
     # HTTP REQUESTS HERE
       def do_POST(self):
@@ -32,7 +37,7 @@ def do_PUT(self):
     self.end_headers()
     self.wfile.write(content)
     return
- 
+#  
 ##----------------------------------------------
 def run():
     httpd = HTTPServer(('', 8080), MyHandler)
@@ -42,4 +47,7 @@ def run():
  
 if __name__ == '__main__':
     run()
- 
+    # HOST, PORT = 'localhost', 8080
+    # server = SocketServer.TCPServer((HOST,PORT), MyTCPHandler)
+    # 
+    # server.serve_forever()
