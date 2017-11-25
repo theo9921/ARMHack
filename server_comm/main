@@ -49,14 +49,13 @@ int main() {
     
     //Adding button interrups
     put_button.rise(&send_put);
-    get_put_button.rise(&send_get_put);
     while (true) {
         //PUT REQUESTS
          if (put_clicked) {
             lcd_print("Button pressed!");
             put_clicked = false;
             NetworkInterface* net = &wifi;
-            HttpRequest* request = new HttpRequest(net, HTTP_PUT, "http://10.25.1.101:8080");
+            HttpRequest* request = new HttpRequest(net, HTTP_POST, "http://10.25.1.101:8080");
             
             //Debugging purposes, displays request on lcd screen
             //char s[64];
@@ -64,7 +63,7 @@ int main() {
 //            lcd_print(s);
 
             request->set_header("Content-Type", "application/json");
-            const char body[] = "{\"put\":\"request\"}";
+            const char body[] = "test";
             HttpResponse* response = request->send(body, strlen(body));
             lcd_print(response->get_body_as_string().c_str());
             delete request;
