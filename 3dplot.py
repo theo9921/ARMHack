@@ -14,5 +14,5 @@ plot = ax.plot_surface(
     X, Y, Z, rstride=1, cstride=1, cmap=plt.get_cmap('jet'),
     linewidth=0, antialiased=False, alpha=0.5)
 
-plt.show()
-plt.savefig('/Desktop/myplot.png')
+#saves the image to the same directory as the .py script
+plt.savefig('myplot.png')
