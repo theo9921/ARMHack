@@ -59,9 +59,16 @@ int main() {
     while (true) {
         //POST REQUESTS
          if (post_clicked) {
+//            lcd_print("Button pressed!");
             post_clicked = false;
             NetworkInterface* net = &wifi;
-            HttpRequest* request = new HttpRequest(net, HTTP_POST, "http://192.168.56.1:8080");
+            HttpRequest* request = new HttpRequest(net, HTTP_POST, "http://10.25.1.101:8080");
+            
+            //Debugging purposes, displays request on lcd screen
+            //char s[64];
+//            sprintf(s, "%x", request);
+//            lcd_print(s);
+
             request->set_header("Content-Type", "application/json");
             const char body[] = "{\"post\":\"request\"}";
             HttpResponse* response = request->send(body, strlen(body));
@@ -71,10 +78,17 @@ int main() {
         
         //POST AND GET REQUESTS
         if (get_clicked) {
+                       
             get_clicked = false;
             put_clicked = true;
             NetworkInterface* net = &wifi;
-            HttpRequest* request = new HttpRequest(net, HTTP_GET, "http://192.168.56.1:8080");
+            
+            //Debugging, prints Mbed's IP address
+//            const char * test;
+//            test = net->get_ip_address();
+//            lcd_print(test);
+            
+            HttpRequest* request = new HttpRequest(net, HTTP_GET, "http://10.25.1.101:8080");
             request->set_header("Content-Type", "application/json");
             const char body[] = "{\"get\":\"request\"}";
             HttpResponse* response = request->send(body, strlen(body));
@@ -87,7 +101,7 @@ int main() {
         if (put_clicked) {
             put_clicked = false;
             NetworkInterface* net = &wifi;
-            HttpRequest* request = new HttpRequest(net, HTTP_PUT, "http://192.168.56.1:8080");
+            HttpRequest* request = new HttpRequest(net, HTTP_PUT, "http://10.25.1.101:8080");
             request->set_header("Content-Type", "application/json");
             const char body[] = "{\"put\":\"request\"}";
             HttpResponse* response = request->send(body, strlen(body));
@@ -95,6 +109,4 @@ int main() {
             delete request;
         }
     }
-}
-    
 }
