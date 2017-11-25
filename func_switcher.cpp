@@ -21,9 +21,11 @@ int current_func = 0;
 void (*function_pt)();
 
 // FUNCTION DEFINTIONS HERE
-void lcd_print(const char* message) {
+void lcd_print(const char* title, const char* message) {
     lcd.cls();
     lcd.locate(0, 3);
+    lcd.printf(title);
+    lcd.locate(0, 12);
     lcd.printf(message);
 }
 
@@ -32,7 +34,7 @@ void read_temp() {
     float h = temp_sensor.readHumidity();
     char val[32];
     sprintf(val, "TEMP: %3.2fc, HUM: %3.2f%%", t, h);
-    lcd_print(val);
+    lcd_print("Reading Temperature", val);
 }
 
 void read_air() {
@@ -41,38 +43,44 @@ void read_air() {
     air_sensor.readData(&eco2, &tvoc);
     char val[32];
     sprintf(val, "eCO2: %dppm, TVOC: %dppb", eco2, tvoc);
-    lcd_print(val);
+    lcd_print("Reading air quality", val);
 }
 
-void toggle_led() {
+/*void toggle_led() {
     led = !led;
-	lcd_print("switching functionality");
-	wait_ms(500);
-}
+    lcd_print("switching functionality");
+    wait_ms(500);
+}*/
 
 void switch_func() {
-	current_func ++;
-	
-	switch(current_func) {
-		case 0:
-			function_pt = &read_temp;
-			break;
-		case 1:
-			function_pt = &read_air;
-			break;
-		default:
-			break;
-	}
+    if (current_func == 1) {
+        current_func = 0;
+    } else {
+        current_func ++;
+    }
+    
+    switch(current_func) {
+        case 0:
+            function_pt = &read_temp;
+            break;
+        case 1:
+            function_pt = &read_air;
+            break;
+        default:
+            break;
+    }
 }
 
 int main() {
-
+    lcd_print("title", "hello world");
     // MAIN CODE HERE
     button.rise(&switch_func);
-    
-	while(1)
+    //rval=string(current_func);
+    //print(strval);
+    function_pt = &read_temp;
+    while(1)
     {
-		function_pt();
-        wait_ms(2000);
+        function_pt();
+        wait_ms(1000);
     }
 }
