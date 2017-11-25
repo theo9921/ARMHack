@@ -46,33 +46,39 @@ void read_air() {
 
 void toggle_led() {
     led = !led;
-	lcd_print("switching functionality");
-	wait_ms(500);
+    lcd_print("switching functionality");
+    wait_ms(500);
 }
 
 void switch_func() {
-	current_func ++;
-	
-	switch(current_func) {
-		case 0:
-			function_pt = &read_temp;
-			break;
-		case 1:
-			function_pt = &read_air;
-			break;
-		default:
-			break;
-	}
+    if (current_func == 1) {
+        current_func = 0;
+    } else {
+        current_func ++;
+    }
+    
+    switch(current_func) {
+        case 0:
+            function_pt = &read_temp;
+            break;
+        case 1:
+            function_pt = &read_air;
+            break;
+        default:
+            break;
+    }
 }
 
 int main() {
 
     // MAIN CODE HERE
     button.rise(&switch_func);
-    
-	while(1)
+    //rval=string(current_func);
+    //print(strval);
+    function_pt = &read_temp;
+    while(1)
     {
-		function_pt();
-        wait_ms(2000);
+        function_pt();
+        wait_ms(1000);
     }
 }
