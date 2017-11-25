@@ -12,6 +12,7 @@ class MyHandler(BaseHTTPRequestHandler):
     
     # HTTP REQUESTS HERE
       def do_POST(self):
+        print("testing")
         content = b"POST: Hello, Mbed!"
         self.send_response(200)
         self.send_header('Content-type', 'text/plain')
@@ -37,10 +38,10 @@ def do_PUT(self):
     self.end_headers()
     self.wfile.write(content)
     return
-#  
+ 
 ##----------------------------------------------
 def run():
-    httpd = HTTPServer(('', 8080), MyHandler)
+    httpd = HTTPServer(('10.25.1.101', 8080), MyHandler)
     print "HTTP server running on port 8080"
     print "Your IP address is: ", socket.gethostbyname(socket.gethostname())
     httpd.serve_forever()
