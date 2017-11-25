@@ -1,0 +1,4 @@
+# ARMHack
+ARM HACKATHON 2017
+
+this is a repository for the MBED CLOUD CONNECT BOARD during the CUES-ARM HACKATHON CAMBRIDGE 2017
