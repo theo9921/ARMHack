@@ -14,7 +14,7 @@ counter=0
 
 #read from server
 while(True):
-	f = urlib2.urlopen('http://10.25.2.118:8080')
+	f = urllib2.urlopen('http://10.25.2.118:8080')
 	inStr = f.read()
 	inStrL = inStr.split()
 	inStrF = []
