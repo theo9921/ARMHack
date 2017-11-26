@@ -1,9 +1,12 @@
 import numpy as np
 import urlib2
 import time
+import mtplotlib
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib import cm
 
 #number of points
-n = 10
+n = 100
 
 #declare a "D array to hold data points
 data = np.zeros((n,3))
@@ -31,8 +34,23 @@ while(True):
 		counter +=1
 	else:
 		break
-	
+		
 print(data)
+#extract X,Y,Z point space
+Xs = data[:,0]
+Ys = data[:,1]
+Zs = data[:,2]
+
+#plot the graph
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+surf = ax.plot_trisurf(Xs, Ys, Zs, linewidth=0)
+
+
+fig.tight_layout()
+
+plt.show()
 
 
 
