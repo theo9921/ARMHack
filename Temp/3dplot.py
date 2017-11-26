@@ -16,3 +16,4 @@ plot = ax.plot_surface(
 
 #saves the image to the same directory as the .py script
 plt.savefig('myplot.png')
+
