@@ -2,25 +2,31 @@ from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 import SocketServer
 import socket
 
+data = ' '
+
 class MyHandler(BaseHTTPRequestHandler):
+
+
     def do_POST(self):
         print("input request received")
         self.send_header('Content-type', 'text/plain')
         self.send_header('Content-Length', 0)
         self.end_headers()
         self.wfile.write('')
-        data = self.rfile.read(int(self.headers.getheader('content-length')))
+        global data 
+        data = str(self.rfile.read(int(self.headers.getheader('content-length'))))
         print (data)
         return
+        
     
     def do_GET(self):
         print("retrival request received")
-        content = data
+        global data
         self.send_response(200)
         self.send_header('Content-type', 'text/plain')
-        self.send_header('Content-Length', len(content))
+        self.send_header('Content-Length', len(data))
         self.end_headers()
-        self.wfile.write(content)
+        self.wfile.write(data)
         return
         
 ##----------------------------------------------
