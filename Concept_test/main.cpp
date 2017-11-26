@@ -13,16 +13,22 @@
 //----------------------------------------------------------------------------
 #include "mbed.h"
 #include "C12832.h"
+#include "CCS811.h"
+#include "Sht31.h"
+#include "TSL2561.h"
+#include "MMA7660.h"
 #include "OdinWiFiInterface.h"
 #include "http_request.h"
 
 // GLOBAL VARIABLES HERE
+datastring="";
+MMA7660 accel(PF_0, PF_1);
 C12832  lcd(PE_14, PE_12, PD_12, PD_11, PE_9);
 OdinWiFiInterface wifi;
 
 //Adding button inturrupts
-InterruptIn put_button(PF_2);
-volatile bool put_clicked = false;
+InterruptIn post_button(PF_2);
+volatile bool post_clicked = false;
 
 // FUNCTION DEFINITIONS HERE
 void lcd_print(const char* message) {
@@ -31,9 +37,20 @@ void lcd_print(const char* message) {
     lcd.printf(message);
 }
 
+//ACCELEROMETER
+void read_accel() {
+    float x = accel.x();
+    float y = accel.y();
+    float z = accel.z();
+    char val[32];
+    sprintf(val, "x=%.2f y=%.2f z=%.2f", x, y, z);
+    datastring=val;
+    lcd_print(val);
+}
+
 //Adding button inturrupts
-void send_put() {
-    put_clicked = true;
+void send_post() {
+    post_clicked = true;
 }
 
 int main() {
@@ -48,12 +65,17 @@ int main() {
     lcd_print("Successfully connected!");
     
     //Adding button interrups
-    put_button.rise(&send_put);
+    post_button.rise(&send_post);
     while (true) {
-        //PUT REQUESTS
-         if (put_clicked) {
+        //POST REQUESTS
+         if (post_clicked) {
             lcd_print("Button pressed!");
-            put_clicked = false;
+            post_clicked = false;
+             
+            //Read accelerometer data
+            read_accel();
+                         
+            
             NetworkInterface* net = &wifi;
             HttpRequest* request = new HttpRequest(net, HTTP_POST, "http://10.25.2.118:8080");
             
@@ -61,9 +83,9 @@ int main() {
             //char s[64];
 //            sprintf(s, "%x", request);
 //            lcd_print(s);
-
+            
             request->set_header("Content-Type", "application/json");
-            const char body[] = "test";
+            const char body[] = datastring;
             HttpResponse* response = request->send(body, strlen(body));
             lcd_print(response->get_body_as_string().c_str());
             delete request;
