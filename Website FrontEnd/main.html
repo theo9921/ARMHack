@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Main</title>
+		<link rel="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script>
+		$(document).ready(function(){
+			$("#welcome").click(function(){
+				$("#main").load("scan.html");
+			});
+		});
+		
+		$(document).ready(function(){
+			$("#team").click(function(){
+				$("#main").load("team.html");
+			});
+		});
+		
+		</script>
+	</head>
+	
+	<body>
+		<div class="header">
+			<h1>Sneaky Coders</h1>
+		</div>
+		<div class="topnav">
+			<a id="scan" href="#">Your Scan</a>
+            <a id="team" href="#">Our Team</a>
+        </div>
+        <div id="main">
+			<p>This is your Scan:</p>
+			<img src="myplot.png" alt="This is a plot" style="width:680px;height:480px;">            
+			<br>
+        </div>
+        <div class="footer">
+            <p>ARM CUES Hackathon 2017</p>
+		</div>
+	</body>
+
+
