@@ -1,14 +1,14 @@
-import numpy as np
 import urllib2
 import time
-import matplotlib as plt
+import numpy as np
+import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import cm
 
 #number of points
-n = 100
+n = 10
 
-#declare a "D array to hold data points
+#declare a 2D array to hold data points
 data = np.zeros((n,3))
 counter=0
 
@@ -25,9 +25,9 @@ while(True):
 		
 
 	if(counter <n):
-		X=inStrF[0]
-		Y=inStrF[1]
-		Z=inStrF[2]
+		X=np.random.randint(0,5)
+		Y=np.random.randint(10,15)
+		Z=np.random.randint(10,16)
 		data[counter][0] = X
 		data[counter][1] = Y
 		data[counter][2] = Z
@@ -41,7 +41,9 @@ Xs = data[:,0]
 Ys = data[:,1]
 Zs = data[:,2]
 
-#plot the graph
+
+# ======
+## plot:
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
@@ -50,7 +52,7 @@ surf = ax.plot_trisurf(Xs, Ys, Zs, linewidth=0)
 
 fig.tight_layout()
 
-plt.show()
+plt.show() # or:
 
 
 
