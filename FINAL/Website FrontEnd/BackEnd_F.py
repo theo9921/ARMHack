@@ -67,4 +67,3 @@ surf = ax.plot_trisurf(Xs, Ys, Zs, linewidth=0)
 fig.tight_layout()
 
 plt.savefig('myplot.png')# or:
-
