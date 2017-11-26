@@ -4,13 +4,23 @@ import socket
 
 class MyHandler(BaseHTTPRequestHandler):
     def do_POST(self):
-        print("request received")
+        print("input request received")
         self.send_header('Content-type', 'text/plain')
         self.send_header('Content-Length', 0)
         self.end_headers()
         self.wfile.write('')
         data = self.rfile.read(int(self.headers.getheader('content-length')))
         print (data)
+        return
+    
+    def do_GET(self):
+        print("retrival request received")
+        content = data
+        self.send_response(200)
+        self.send_header('Content-type', 'text/plain')
+        self.send_header('Content-Length', len(content))
+        self.end_headers()
+        self.wfile.write(content)
         return
         
 ##----------------------------------------------
