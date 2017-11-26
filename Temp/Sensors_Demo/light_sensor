@@ -11,6 +11,7 @@
 // permitted to do so under the terms of a subsisting license agreement
 // from ARM Limited or its affiliates.
 //----------------------------------------------------------------------------
+//--------------MBED CLOUD TUTORIAL----------------
 #include "mbed.h"
 #include "C12832.h"
 #include "CCS811.h"
@@ -20,31 +21,37 @@
 
 // GLOBAL VARIABLES HERE
 C12832  lcd(PE_14, PE_12, PD_12, PD_11, PE_9);
-DigitalOut  led(PB_8, 1);
-InterruptIn button(PF_2);
+TSL2561 light_sensor(PF_0, PF_1, TSL2561_ADDR_HIGH);
 
 // FUNCTION DEFINTIONS HERE
+//LCD Screen
 void lcd_print(const char* message) {
     lcd.cls();
     lcd.locate(0, 3);
     lcd.printf(message);
 }
 
-void toggle_led() {
-    led = !led;
-	lcd_print("button pressed");
-	wait_ms(2000);
-	lcd_print("Waiting for button input");
+//READING THE LIGHT SENSOR
+void light_setup(){
+    light_sensor.begin();
+    light_sensor.setGain(TSL2561_GAIN_0X);
+    light_sensor.setTiming(TSL2561_INTEGRATIONTIME_402MS);
+}
+
+void read_light() {
+    int vis = light_sensor.getLuminosity(TSL2561_VISIBLE);
+    int infr = light_sensor.getLuminosity(TSL2561_INFRARED);
+    char val[32];
+    sprintf(val, "VIS: %d, INFR: %d ", vis, infr);
+    lcd_print(val);
 }
 
 int main() {
-
+    light_setup();
     // MAIN CODE HERE
-    button.rise(&toggle_led);
-    lcd_print("Waiting for button input");
-    /*while(1)
+    while(1)
     {
-
+        read_light();
         wait_ms(2000);
-    }*/
+    }
 }
