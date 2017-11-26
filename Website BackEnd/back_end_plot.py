@@ -25,9 +25,9 @@ while(True):
 		
 
 	if(counter <n):
-		X=np.random.randint(0,5)
-		Y=np.random.randint(10,15)
-		Z=np.random.randint(10,16)
+		X=inStrF[0]
+		Y=inStrF[1]
+		Z=inStrF[2]
 		data[counter][0] = X
 		data[counter][1] = Y
 		data[counter][2] = Z
