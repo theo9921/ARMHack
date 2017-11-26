@@ -13,27 +13,53 @@
 //----------------------------------------------------------------------------
 #include "mbed.h"
 #include "C12832.h"
+#include "CCS811.h"
+#include "Sht31.h"
+#include "TSL2561.h"
+#include "MMA7660.h"
 #include "OdinWiFiInterface.h"
 #include "http_request.h"
 
+#include <string.h>
+#include <iomanip> // setprecision
+#include <sstream> // stringstream
+#include <stdio.h>
+
 // GLOBAL VARIABLES HERE
+std::ostringstream oss;
+MMA7660 accel(PF_0, PF_1);
 C12832  lcd(PE_14, PE_12, PD_12, PD_11, PE_9);
 OdinWiFiInterface wifi;
 
 //Adding button inturrupts
-InterruptIn put_button(PF_2);
-volatile bool put_clicked = false;
+InterruptIn post_button(PF_2);
+volatile bool post_clicked = false;
 
 // FUNCTION DEFINITIONS HERE
+
+
 void lcd_print(const char* message) {
     lcd.cls();
     lcd.locate(0, 3);
     lcd.printf(message);
 }
 
+//ACCELEROMETER
+void read_accel() {
+    oss.str(std::string()); //clears stream
+    float x = accel.x();
+    float y = accel.y();
+    float z = accel.z();
+    char val[32];
+    sprintf(val, "%.2f %.2f %.2f", x, y, z);
+    lcd_print(val);
+
+    oss << x << " " << y << " " << z;
+}
+
 //Adding button inturrupts
-void send_put() {
-    put_clicked = true;
+void send_post() {
+    post_clicked = true;
 }
 
 int main() {
@@ -48,12 +74,15 @@ int main() {
     lcd_print("Successfully connected!");
     
     //Adding button interrups
-    put_button.rise(&send_put);
+    post_button.rise(&send_post);
     while (true) {
-        //PUT REQUESTS
-         if (put_clicked) {
+        //POST REQUESTS
+         if (post_clicked) {
             lcd_print("Button pressed!");
-            put_clicked = false;
+            post_clicked = false;
+            
+            read_accel();
+            
             NetworkInterface* net = &wifi;
             HttpRequest* request = new HttpRequest(net, HTTP_POST, "http://10.25.2.118:8080");
             
@@ -63,10 +92,11 @@ int main() {
 //            lcd_print(s);
 
             request->set_header("Content-Type", "application/json");
-            const char body[] = "test";
-            HttpResponse* response = request->send(body, strlen(body));
+            
+            HttpResponse* response = request->send(oss.str().c_str(), strlen(oss.str().c_str()));
             lcd_print(response->get_body_as_string().c_str());
             delete request;
+
         }
     }
 }
