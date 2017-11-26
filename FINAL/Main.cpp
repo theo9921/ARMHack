@@ -169,7 +169,7 @@ void read_data()
     float x = accel.x();
     float y = accel.y();
     float z = accel.z();
-    char val[32];
+    //char val[32];
     //sprintf(val, "%.2f %.2f %.2f", x, y, z);
 //    lcd_print(val);
     int dis = laser();
@@ -201,9 +201,10 @@ int main()
         lcd_print("Standby");
         while (post_clicked != 1) {
         }
+        lcd_print("Scanning");
         post_clicked = 0;
         
-        lcd_print("Scanning");
+        
         while (post_clicked == 0) {
             
             //POST REQUESTS
@@ -223,7 +224,7 @@ int main()
       //      lcd_print(response->get_body_as_string().c_str());
             delete request;
 
-            wait(0.5);
+            wait(0.1);
         }
         post_clicked = 0;
         lcd_print("Standby");
