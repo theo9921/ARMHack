@@ -1,0 +1,53 @@
+body {
+    background-color:rgb(229,236,235);
+}
+
+.header {
+    background-color: rgb(0,43,73);
+    padding: 5px;
+    text-align: center;
+}
+
+.topnav {
+    overflow: hidden;
+    background-color:rgb( 149, 214, 0);
+}
+
+.topnav a {
+    float: left;
+    display: block;
+    color:  rgb(0,43,73);
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.topnav a:hover {
+    background-color: rgb(0,43,73);
+    color:  rgb(149, 214, 0);
+}
+
+.main {
+    float: center;
+    padding: 15px;
+    background-color:#ffffff
+}
+
+.footer {
+    background-color: rgb(0,43,73);
+    text-align: center;
+    padding: 10px;
+}
+
+h1 {
+    color: rgb(149, 214, 0);
+}
+
+p {
+    color: rgb(0, 145, 189);
+}
+
+img {
+    display: block;
+    margin: 0 auto;
+}
