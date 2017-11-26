@@ -1,3 +1,4 @@
+#--------------Server receive-tranmit---------------
 import urllib2
 import time
 
