@@ -10,5 +10,5 @@ Apart from the MBed Cloud Environment and IDE a variety of different technologie
 * HTML/CSS : HTML5 and CSS3 were used to create a static website through which the user could see the scan result.
 
 ## Structure
-The folder **/FINAL** contains all the files regarding the final demo packed together for easier access. In contrast the folder **/Temp** contains all the test files regarding the individual components of the project. 
+The folder **/FINAL** contains all the files regarding the final demo packed together for easier access. In contrast the folder **/Temp** contains all the test files regarding the individual components of the project. Finally, on the **/libraries.md** file you will find links to the libraries needed for this project.
 
